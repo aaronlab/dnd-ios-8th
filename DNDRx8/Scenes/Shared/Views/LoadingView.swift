@@ -21,6 +21,8 @@ class LoadingView: UIView {
   }
   
   private func configureView() {
+    isHidden = true
+    
     backgroundColor = .lightGray
     addSubview(indicator)
     
@@ -32,6 +34,7 @@ class LoadingView: UIView {
   func startLoading() {
     DispatchQueue.main.async { [weak self] in
       guard let self = self else { return }
+      self.isHidden = false
       self.indicator.startAnimating()
     }
   }
@@ -40,6 +43,7 @@ class LoadingView: UIView {
     DispatchQueue.main.async { [weak self] in
       guard let self = self else { return }
       self.indicator.stopAnimating()
+      self.isHidden = true
     }
   }
 }
