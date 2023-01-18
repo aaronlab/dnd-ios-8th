@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 fileprivate let tableViewCellIdentifier = "newsCell"
 
@@ -15,12 +16,24 @@ class MainViewController: UIViewController {
   
   private let loadingView = LoadingView()
   
+  private let viewModel = MainViewModel()
+  
+  var bag = DisposeBag()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
     configureViewController()
     configureTableView()
     configureLoadingView()
+    
+    bindViewModel()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    viewModel.loadNews()
   }
   
   private func configureViewController() {
@@ -50,6 +63,23 @@ class MainViewController: UIViewController {
     }
   }
   
+  private func bindViewModel() {
+    viewModel.isLoading
+      .asDriver()
+      .drive(onNext: { [weak self] isLoading in
+        guard let self = self else { return }
+        
+        switch isLoading {
+        case true:
+          self.loadingView.startLoading()
+        case false:
+          self.loadingView.stopLoading()
+          self.tableView.reloadData()
+        }
+      })
+      .disposed(by: bag)
+  }
+  
 }
 
 // MARK: - UITableViewDelegate
@@ -70,16 +100,23 @@ extension MainViewController: UITableViewDelegate {
 extension MainViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView,
                  numberOfRowsInSection section: Int) -> Int {
-    20
+    viewModel.news.value.count
   }
   
   func tableView(_ tableView: UITableView,
                  cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier,
-                                                   for: indexPath) as? NewsTableViewCell else {
+                                                   for: indexPath) as? NewsTableViewCell,
+          let news = viewModel.news.value[safe: indexPath.row] else {
       return UITableViewCell()
     }
+    
+    cell.configureCell(with: news)
     
     return cell
   }
 }
+
+// MARK: - DisposableObjectProvider
+
+extension MainViewController: DisposableObjectProvider {}
