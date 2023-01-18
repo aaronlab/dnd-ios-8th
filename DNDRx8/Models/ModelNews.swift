@@ -14,7 +14,7 @@ struct News {
 }
 
 extension News {
-  func mock() -> Array<News> {
+  static func mock() -> Array<News> {
     sleep(UInt32(Int.random(in: 2...5)))
     
     return Array(repeating: News(title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
