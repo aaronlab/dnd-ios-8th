@@ -43,6 +43,11 @@ class NewsTableViewCell: UITableViewCell {
     dateLabel]
   }
   
+  private let divider = UIView()
+    .then {
+      $0.backgroundColor = .gray
+    }
+  
   override func prepareForReuse() {
     super.prepareForReuse()
     allLabels.forEach {
@@ -72,6 +77,11 @@ class NewsTableViewCell: UITableViewCell {
       $0.leading.equalToSuperview().offset(8.0)
       $0.bottom.equalToSuperview().offset(-4.0)
       $0.trailing.equalToSuperview().offset(-8.0)
+    }
+    
+    stackView.addArrangedSubview(divider)
+    divider.snp.makeConstraints {
+      $0.height.equalTo(2)
     }
   }
   
