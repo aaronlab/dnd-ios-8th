@@ -75,7 +75,7 @@ class NewsTableViewCell: UITableViewCell {
     }
   }
   
-  func configureCell(with news: News) {
+  func configureCell(with news: ModelNews) {
     titleLabel.text = news.title
     summaryLabel.text = news.summary
     dateLabel.text = news.date
