@@ -68,9 +68,17 @@ class NewsTableViewCell: UITableViewCell {
     }
     
     stackView.snp.makeConstraints {
-      $0.top.leading.equalToSuperview().offset(4.0)
-      $0.bottom.trailing.equalToSuperview().offset(-4.0)
+      $0.top.equalToSuperview().offset(4.0)
+      $0.leading.equalToSuperview().offset(8.0)
+      $0.bottom.equalToSuperview().offset(-4.0)
+      $0.trailing.equalToSuperview().offset(-8.0)
     }
+  }
+  
+  func configureCell(with news: News) {
+    titleLabel.text = news.title
+    summaryLabel.text = news.summary
+    dateLabel.text = news.date
   }
   
 }
