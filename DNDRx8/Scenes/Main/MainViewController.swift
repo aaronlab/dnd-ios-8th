@@ -11,15 +11,21 @@ fileprivate let tableViewCellIdentifier = "newsCell"
 
 class MainViewController: UIViewController {
   
-  let tableView = UITableView(frame: .zero, style: .plain)
+  private let tableView = UITableView(frame: .zero, style: .plain)
+  
+  private let loadingView = LoadingView()
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    configureViewController()
+    configureTableView()
+    configureLoadingView()
+  }
+  
+  private func configureViewController() {
     title = "News"
     view.backgroundColor = .white
-    
-    configureTableView()
   }
   
   private func configureTableView() {
@@ -34,6 +40,14 @@ class MainViewController: UIViewController {
                        forCellReuseIdentifier: tableViewCellIdentifier)
     tableView.delegate = self
     tableView.dataSource = self
+  }
+  
+  private func configureLoadingView() {
+    view.addSubview(loadingView)
+    
+    loadingView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
   }
   
 }
