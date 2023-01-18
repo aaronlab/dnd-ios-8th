@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import RxSwift
+import RxCocoa
 
 protocol Loadable {
-  var isLoading: BehaviorSubject<Bool> { get }
+  var isLoading: BehaviorRelay<Bool> { get }
 }
